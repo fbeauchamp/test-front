@@ -45,6 +45,31 @@
 
 </template>
 <style scoped>
+select {
+  width: 19.8em;
+  height: 2em;
+  border-radius: 0.25em;
+  margin: 1em 0;
+}
+option {
+  text-align: center
+}
+table {
+  border: 1px solid slategray;
+  border-radius: 0.25em;
+}
+th {
+  border-bottom: 1px solid lightgrey;
+}
+button {
+  background: none;
+  border: none;
+  outline: 0;
+  border-radius: 0.25em;
+  transition: background-color 0.25s ease;
+  cursor: pointer;
+}
+
 .today button{
   font-weight: bold;
 }
@@ -54,7 +79,7 @@
 }
 .inRange button {
   color:white;
-  background-color: lightslategray;
+  background-color: lightgrey;
 }
 button {
   padding: 0.25em;
