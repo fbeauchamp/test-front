@@ -1,8 +1,10 @@
 <template>
     <div>
-      <select v-model="currentYearMonth" style="width: 19.5em; height: 2em">
+      <select v-model="currentYearMonth" aria-label="month selector">
         <option v-for="option in selectOptions"
           :key="option.value"
+          :aria-label="option.label"
+          :aria-selected="option.value === currentYearMonth"
           :value="option.value">{{ option.label }}</option>
       </select>
       <table
