@@ -132,7 +132,7 @@ export default {
         options.push({
           date,
           value: date.format('YYYY-M'),
-          label: date.format('MMMM YYYY')
+          label: date.format('MMMM YY')
         })
       }
       return options
