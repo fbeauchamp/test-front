@@ -1,5 +1,8 @@
 # calendar
 
+Vue.js demonstration. Make a calendar allowing a user to select single dates, ranges or all the same weekdays of the months
+
+
 ## Project setup
 ```
 npm install
