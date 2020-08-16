@@ -143,13 +143,15 @@ export default {
         console.error('invalid date', this.currentYearMonth)
         return
       }
+      console.log('update selecte')
       const options = []
       for (let i = -MONTH_RANGE; i < MONTH_RANGE; i++) {
         const date = current.add(i, 'month')
         options.push({
           date,
           value: date.format('YYYY-M'),
-          label: date.format('MMMM YY')
+          label: date.format('MMMM YYYY'),
+          language: this.$props.language
         })
       }
       return options

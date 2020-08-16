@@ -37,7 +37,7 @@ describe('Calendar component test', () => {
     cy.get(':nth-child(4) > td:nth-child(4)').trigger('mouseup')
     cy.get('.selected').should('have.length', 3)
   })
-  it('should change language', ()=>{
+  it('should change language', () => {
     cy.visit('/')
     cy.get('#language').select('fr')
     cy.get('thead > tr > :nth-child(1) > button').should('have.text', ' lun. ')
