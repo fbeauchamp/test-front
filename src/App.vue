@@ -1,7 +1,14 @@
 <template>
   <div id="app">
     <h1>Demo of calendar component</h1>
-    <Calendar v-on:selectionChanged="selectionChanged"/>
+    <select v-model="language">
+      <option value="fr">Français</option>
+      <option value="fr-ca">Français Canadien</option>
+      <option value="en">English</option>
+      <option value="zh-cn">中文</option>
+
+    </select>
+    <Calendar v-on:selectionChanged="selectionChanged" :language="language"/>
     <ul>
       <li v-for="date in selection" :key="date">
         {{ date }}
@@ -20,7 +27,8 @@ export default {
   },
   data () {
     return {
-      selection: []
+      selection: [],
+      language: 'en'
     }
   },
   methods: {

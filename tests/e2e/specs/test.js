@@ -8,7 +8,7 @@ describe('Calendar component test', () => {
   it('Should answer to click', () => {
     cy.visit('/')
     cy.get(':nth-child(3) > td:nth-child(4)').click().should('have.class', 'selected')
-    //click again, should be deselected
+    // click again, should be deselected
     cy.get(':nth-child(3) > td:nth-child(4)').click().should('not.have.class', 'selected')
   })
   it('Should answer to click on a header', () => {
@@ -16,23 +16,22 @@ describe('Calendar component test', () => {
     cy.get('th:nth-child(4)').click()
     cy.get(' td:nth-child(4)').should('have.class', 'selected')
 
-    //click again, should be deselected
+    // click again, should be deselected
     cy.get('th:nth-child(4)').click()
     cy.get('td:nth-child(4)').should('not.have.class', 'selected')
   })
   it('Should be able to change month', () => {
     cy.visit('/')
     cy.get('select').select('2020-12')
-
   })
-  
+
   it('Should answer to drag', () => {
     cy.visit('/')
     cy.get(':nth-child(3) > td:nth-child(4)').trigger('mousedown')
     cy.get(':nth-child(4) > td:nth-child(6)').trigger('mouseover')
     cy.get(':nth-child(4) > td:nth-child(6)').trigger('mouseup')
     cy.get('.selected').should('have.length', 10)
-    
+
     cy.get(':nth-child(3) > td:nth-child(5)').trigger('mousedown')
     cy.get(':nth-child(4) > td:nth-child(4)').trigger('mouseover')
     cy.get(':nth-child(4) > td:nth-child(4)').trigger('mouseup')

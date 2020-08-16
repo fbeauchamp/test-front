@@ -1,48 +1,50 @@
 <template>
     <div>
-      <select v-model="currentYearMonth" aria-label="month selector">
-        <option v-for="option in selectOptions"
-          :key="option.value"
-          :aria-label="option.label"
-          :aria-selected="option.value === currentYearMonth"
-          :value="option.value">{{ option.label }}</option>
-      </select>
-      <table
-        @mouseleave="rangeStart = null"
-        @mouseup="endRange()"
-        >
-        <thead>
-          <tr>
-            <th
-              v-for="day in daysOfWeek"
-              :key="day.index"
+      <div v-if="loading">Loading</div>
+      <template v-else>
+        <select v-model="currentYearMonth" aria-label="month selector">
+          <option v-for="option in selectOptions"
+            :key="option.value"
+            :aria-label="option.label"
+            :aria-selected="option.value === currentYearMonth"
+            :value="option.value">{{ option.label }}</option>
+        </select>
+        <table
+          @mouseleave="rangeStart = null"
+          @mouseup="endRange()"
+          >
+          <thead>
+            <tr>
+              <th
+                v-for="day in daysOfWeek"
+                :key="day.index"
+                >
+                <button
+                  v-on:click="selectDayOfWeek(day.index)"
+                  :ariaLabel="`click to select all ${day.short}`">
+                  {{ day.short }}
+                </button>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="week in weeks" :key="week.index">
+              <td v-for="day in week.days" :key="day.index"
+                :class="{today: day.isToday, selected: day.isSelected, inRange: day.isInRange}"
               >
-              <button
-                v-on:click="selectDayOfWeek(day.index)"
-                :ariaLabel="`click to select all ${day.short}`">
-                {{ day.short }}
-              </button>
-            </th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="week in weeks" :key="week.index">
-            <td v-for="day in week.days" :key="day.index"
-              :class="{today: day.isToday, selected: day.isSelected, inRange: day.isInRange}"
-            >
-              <button
-                v-if="day.date"
-                @mouseover="updateRange(day.date, $event)"
-                @mousedown="startRange(day.date)"
-                :aria-label="day.ariaLabel"
-                :aria-selected="day.isSelected"
-              >{{ day.dayOfMonth }}</button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+                <button
+                  v-if="day.date"
+                  @mouseover="updateRange(day.date, $event)"
+                  @mousedown="startRange(day.date)"
+                  :aria-label="day.ariaLabel"
+                  :aria-selected="day.isSelected"
+                >{{ day.dayOfMonth }}</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </template>
     </div>
-
 </template>
 <style scoped>
 select {
@@ -88,7 +90,6 @@ button {
 }
 </style>
 <script>
-import 'dayjs/locale/fr'
 import * as dayjs from 'dayjs'
 import isToday from 'dayjs/plugin/isToday'
 import isSameOrBefore from 'dayjs/plugin/isSameOrBefore'
@@ -103,7 +104,6 @@ dayjs.extend(isSameOrAfter)
 dayjs.extend(localeData)
 dayjs.extend(localizedFormat)
 dayjs.extend(weekday)
-dayjs.locale('fr')
 const SELECTED_DATE_FORMAT = 'YYYY-MM-DD'
 const MONTH_RANGE = 12
 
@@ -116,8 +116,24 @@ export default {
       rangeStart: null,
       rangeEnd: null,
       rangeGrowingFromEnd: true,
-      currentYearMonth: '2020-7'
+      currentYearMonth: '2020-7',
+      loading: false
     }
+  },
+  props: {
+    language: {
+      validator: function (value) {
+        return ['en', 'fr', 'fr-ca', 'zh-cn'].indexOf(value) !== -1
+      },
+      default: 'fr'
+    }
+  },
+  created () {
+    this.updateLanguage()
+  },
+
+  watch: {
+    language: 'updateLanguage'
   },
   computed: {
     selectOptions () {
@@ -142,7 +158,11 @@ export default {
       // align starting day with the locale usage
       dayjs.localeData().weekdaysShort().forEach((day, index) => {
         const localeIndex = (index + 7 - dayjs.localeData().firstDayOfWeek()) % 7
-        days[localeIndex] = { short: day, index: localeIndex }
+        days[localeIndex] = {
+          short: day,
+          index: localeIndex,
+          language: this.$props.language
+        }
       })
       return days
     },
@@ -166,6 +186,7 @@ export default {
         const date = monthStart.add(d, 'd')
         const isSelected = this.isAlreadySelected(date)
         days.push({
+          language: this.$props.language,
           index: date.format(SELECTED_DATE_FORMAT),
           dayOfMonth: date.date(),
           date,
@@ -248,6 +269,13 @@ export default {
       }
       this.rangeStart = null
       this.rangeEnd = null
+    },
+    updateLanguage () {
+      this.loading = true
+      import('dayjs/locale/' + this.$props.language).then(() => {
+        this.loading = false
+        dayjs.locale(this.$props.language)
+      })
     }
   }
 }
