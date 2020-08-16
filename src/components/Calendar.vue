@@ -190,12 +190,14 @@ export default {
     select (date) {
       if (!this.isAlreadySelected(date)) {
         this.$set(this.selected, this.selected.length, date.format(SELECTED_DATE_FORMAT))
+        this.$emit('selectionChanged', this.selected)
       }
     },
     deselect (date) {
       const index = this.selected.findIndex(d => d === date.format(SELECTED_DATE_FORMAT))
       if (index >= 0) {
         this.selected.splice(index, 1)
+        this.$emit('selectionChanged', this.selected)
       }
     },
     selectDayOfWeek (dayNumber) {

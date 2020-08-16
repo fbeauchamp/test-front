@@ -1,7 +1,12 @@
 <template>
   <div id="app">
     <h1>Demo of calendar component</h1>
-    <Calendar />
+    <Calendar v-on:selectionChanged="selectionChanged"/>
+    <ul>
+      <li v-for="date in selection" :key="date">
+        {{ date }}
+      </li>
+    </ul>
   </div>
 </template>
 
@@ -12,6 +17,16 @@ export default {
   name: 'App',
   components: {
     Calendar
+  },
+  data () {
+    return {
+      selection: []
+    }
+  },
+  methods: {
+    selectionChanged (dates) {
+      this.selection = dates
+    }
   }
 }
 </script>
