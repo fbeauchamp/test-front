@@ -2,8 +2,9 @@
     <div>
       <div v-if="loading">Loading</div>
       <template v-else>
-        <select v-model="currentYearMonth" aria-label="month selector">
-          <option v-for="option in selectOptions"
+        <select v-model="currentYearMonth" aria-label="month selector" class="month-selector">
+          <option
+            v-for="option in selectOptions"
             :key="option.value"
             :aria-label="option.label"
             :aria-selected="option.value === currentYearMonth"

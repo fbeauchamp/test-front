@@ -22,7 +22,7 @@ describe('Calendar component test', () => {
   })
   it('Should be able to change month', () => {
     cy.visit('/')
-    cy.get('select').select('2020-12')
+    cy.get('select.month-selector').select('2020-12')
   })
 
   it('Should answer to drag', () => {
@@ -36,5 +36,13 @@ describe('Calendar component test', () => {
     cy.get(':nth-child(4) > td:nth-child(4)').trigger('mouseover')
     cy.get(':nth-child(4) > td:nth-child(4)').trigger('mouseup')
     cy.get('.selected').should('have.length', 3)
+  })
+  it('should change language', ()=>{
+    cy.visit('/')
+    cy.get('#language').select('fr')
+    cy.get('thead > tr > :nth-child(1) > button').should('have.text', ' lun. ')
+
+    cy.get('#language').select('fr-ca')
+    cy.get('thead > tr > :nth-child(1) > button').should('have.text', ' dim. ')
   })
 })

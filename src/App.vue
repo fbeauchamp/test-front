@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <h1>Demo of calendar component</h1>
-    <select v-model="language">
+    <select v-model="language" id="language">
       <option value="fr">Français</option>
       <option value="fr-ca">Français Canadien</option>
       <option value="en">English</option>
